@@ -38,13 +38,14 @@ def extractScripts():
     scripts = []
     cwd = getcwd()
     for idx,script in enumerate(listdir(cwd)):
-        if(script == "api.py"):continue
+        if(script == "api.py" or script[len(script)-3:len(script)] !=".py"):continue
         scripts.append(
             {
             'id':idx,
             'name':script
             }
         )
+        print()
     print(scripts)
     return scripts
 
