@@ -4,7 +4,6 @@ import flask
 from flask import request, jsonify
 
 app = flask.Flask(__name__)
-app.config["DEBUG"] = True
 
 @app.route('/', methods=['GET'])
 def home():
@@ -49,7 +48,7 @@ def extractScripts():
     print(scripts)
     return scripts
 
-app.run()
+app.run(host='0.0.0.0', port=80, debug=True)
 # https://programminghistorian.org/en/lessons/creating-apis-with-python-and-flask
 # So I basically need to do 3 things
 # Create api to have a get. Retrieves names of all python scripts.
