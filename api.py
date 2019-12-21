@@ -1,4 +1,5 @@
 from os import listdir,getcwd
+from helloWorld import printHello
 import flask
 from flask import request, jsonify
 
@@ -16,7 +17,7 @@ def retrieve_scripts():
     return jsonify(extractScripts())
 
 
-@app.route('/api/v1/resources/books', methods=['GET'])
+@app.route('/piConnect/v1/runScript', methods=['GET'])
 def api_id():
     # Check if an ID was provided as part of the URL.
     # If ID is provided, assign it to a variable.
@@ -26,18 +27,12 @@ def api_id():
     else:
         return "Error: No id field provided. Please specify an id."
 
-    # Create an empty list for our results
-    results = []
-
-    # Loop through the data and match results that fit the requested ID.
-    # IDs are unique, but other fields might return many results
-    for book in books:
-        if book['id'] == id:
-            results.append(book)
-
-    # Use the jsonify function from Flask to convert our list of
-    # Python dictionaries to the JSON format.
-    return jsonify(results)
+    scripts = extractScripts()
+    for script in scripts:
+        if script['id'] == id:
+            printHello()
+            return "Ran Script: " + script['name']
+    return "Failed to find script with Id:"+ id
 
 def extractScripts():
     scripts = []
@@ -47,26 +42,11 @@ def extractScripts():
         scripts.append(
             {
             'id':idx,
-            'script':script
+            'name':script
             }
         )
     print(scripts)
     return scripts
-    # {'id': 0,
-    #  'title': 'A Fire Upon the Deep',
-    #  'author': 'Vernor Vinge',
-    #  'first_sentence': 'The coldsleep itself was dreamless.',
-    #  'year_published': '1992'},
-    # {'id': 1,
-    #  'title': 'The Ones Who Walk Away From Omelas',
-    #  'author': 'Ursula K. Le Guin',
-    #  'first_sentence': 'With a clamor of bells that set the swallows soaring, the Festival of Summer came to the city Omelas, bright-towered by the sea.',
-    #  'published': '1973'},
-    # {'id': 2,
-    #  'title': 'Dhalgren',
-    #  'author': 'Samuel R. Delany',
-    #  'first_sentence': 'to wound the autumnal city.',
-    #  'published': '1975'}
 
 app.run()
 # https://programminghistorian.org/en/lessons/creating-apis-with-python-and-flask
