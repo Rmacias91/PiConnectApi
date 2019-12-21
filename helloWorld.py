@@ -1,7 +1,8 @@
+def printHello():
+  print("Hello World!")
+
 def main():
-  print()
+  printHello()
   
 main()
 
-def printHello():
-  print("Hello World!")

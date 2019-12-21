@@ -1,5 +1,5 @@
 from os import listdir,getcwd
-from helloWorld import printHello
+import subprocess
 import flask
 from flask import request, jsonify
 
@@ -30,7 +30,7 @@ def api_id():
     scripts = extractScripts()
     for script in scripts:
         if script['id'] == id:
-            printHello()
+            subprocess.call(['python.exe', script['name']], shell=False)
             return "Ran Script: " + script['name']
     return "Failed to find script with Id:"+ id
 
