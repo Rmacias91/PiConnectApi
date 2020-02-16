@@ -17,24 +17,27 @@ def retrieve_scripts():
     return jsonify(extractScripts())
 
 
-@app.route('/piConnect/v1/runScript', methods=['GET'])
+@app.route('/piConnect/v1/runScript', methods=['POST'])
 def api_id():
     # Check if an ID was provided as part of the URL.
     # If ID is provided, assign it to a variable.
     # If no ID is provided, display an error in the browser.
-    if 'id' in request.args:
-        id = int(request.args['id'])
-    else:
-        return "Error: No id field provided. Please specify an id."
+    if(not request.is_json):
+        return "Error: No Json Data Provided"
+    content = request.get_json()
+    id = int(content['id'])
 
     scripts = extractScripts()
     cwd = getcwd()
     for script in scripts:
         if script['id'] == id:
-	    print( cwd + "/" + script['name'])
-            subprocess.call([sys.executable ,cwd + "/" + script['name']], shell=False)
+            print( cwd + "/" + script['name'])
+            if("message" in content):
+                print(content['message'])
+            else:
+                subprocess.call([sys.executable ,cwd + "/" + script['name']], shell=False)
             return "Ran Script: " + script['name']
-    return "Failed to find script with Id:"+ id
+    return "Failed to find script with Id:"+ str(id)
 
 def extractScripts():
     scripts = []
